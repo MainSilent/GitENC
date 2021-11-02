@@ -8,4 +8,4 @@ So I decided to work on this project and also get more experience with rust.
 
 Note: There are other projects with the same name or purpose but they don't have the requirements that I need, I need a command line tool to use instead of git to compress and encrypt the data and when clonning do the reverse.
 
-BTW this project is my first experience with rust.
+BTW this project is my first experience with rust and only linux is supported.
