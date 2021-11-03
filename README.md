@@ -20,9 +20,9 @@ cargo build
 
 ## Setup
 
-Make sure you have `openssl` and `git` installed.
+Make sure you have `openssl` and `git` installed
 
-Create a repo and set `GITENC_PASSWORD` in .env for password.
+Create a repo and set `GITENC_PASSWORD` in .env for password
 
 ### .gitignore
 ```
@@ -32,13 +32,13 @@ Create a repo and set `GITENC_PASSWORD` in .env for password.
 ```
 
 ## How to Commit
-Run the following command to compress, encrypt and commit to git.
+Run the following command to compress, encrypt and commit to git
 ```
 gitenc commit
 ```
 
 ## How to Clone
-Create an empty directory and setup the .env and run the command below.
+Create an empty directory and setup the .env and run the command below
 ```
 gitenc clone https://{username}:{password}@github.com/{owner}/{repo}
 ```
