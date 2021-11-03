@@ -6,7 +6,7 @@ use std::fs::File;
 use flate2::read::GzDecoder;
 
 pub fn clone(url: &str) {
-    fs::remove_dir_all("*").ok();
+    fs::remove_file("*").ok();
     fs::remove_dir_all(".git").ok();
     fs::remove_file(".gitignore").ok();
 
