@@ -1,6 +1,10 @@
 use std::io;
 use std::{fs, env};
 use std::process::{Command, Stdio};
+use tar::Archive;
+use std::fs::File;
+use std::path::PathBuf;
+use flate2::read::GzDecoder;
 
 pub fn clone(url: &str) {
     println!("Initializing git...");
@@ -9,8 +13,9 @@ pub fn clone(url: &str) {
     println!("\nDecrypting...");
     decrypt();
 
-    println!("Uncompressing...");
-    //uncompress();
+    println!("Extracting...");
+    extract();
+    println!("Extracted successfully.");
 }
 
 fn init(url: &str) {
@@ -37,7 +42,20 @@ fn init(url: &str) {
 fn decrypt() {
     let password = env::var("GITENC_PASSWORD").unwrap();
 
-    Command::new("openssl")
+    let cmd = Command::new("openssl")
         .args(["enc", "-d", "-aes-256-cbc", "-pbkdf2", "-a", "-in", "./data.enc", "-out", "./enc.tar.gz", "-k", &password])
         .output().unwrap();
+
+    if cmd.status.code().unwrap() != 0 {
+        eprintln!("Failed to decrypt");
+        std::process::exit(102);
+    }
+}
+
+fn extract() {
+    let path = "enc.tar.gz";
+    let tar_gz = File::open(path).unwrap();
+    let tar = GzDecoder::new(tar_gz);
+    let mut archive = Archive::new(tar);
+    archive.unpack(".").unwrap();
 }
