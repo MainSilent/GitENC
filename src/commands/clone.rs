@@ -11,6 +11,7 @@ fn init(url: &str) {
     print!("\nPlease enter a branch name: ");
     io::Write::flush(&mut io::stdout()).expect("flush failed!");
     io::stdin().read_line(&mut branch).unwrap();
+    branch = branch.trim().to_string();
 
     Command::new("git")
         .args(["init", "."]).output().unwrap();
