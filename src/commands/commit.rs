@@ -12,7 +12,14 @@ pub fn commit() {
     println!("\nEncrypting...");
     encrypt().unwrap();
 
-    println!("\nDone.");
+    // Track files
+    Command::new("git")
+        .args(["add", "."]).output().unwrap();
+
+    Command::new("git")
+        .args(["commit", "-m", "\"Update encrypted data\""]).output().unwrap();
+
+    println!("\nCommitted successfully.");
 }
 
 fn compress() -> Result<(), std::io::Error> {
