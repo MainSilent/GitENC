@@ -3,12 +3,17 @@ mod commands;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let command = &args[1][..];
+    if args.len() == 1 {
+        eprintln!("Please pass an argument");
+        std::process::exit(101)
+    }
 
+    let command = &args[1][..];
     match command {
+        "commit" => commands::commit(),
         "push" => commands::push(),
         _ => {
-            eprintln!("Please pass an argument")
+            eprintln!("Please pass a valid argument")
         }
     }
 }
