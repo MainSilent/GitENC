@@ -18,8 +18,9 @@ fn init(url: &str) {
     Command::new("git")
         .args(["remote", "add", "origin", url]).output().unwrap();
     
+    println!("Clonning...");
     Command::new("git")
-        .args(["pull", "origin", "main"])
+        .args(["pull", "origin", &branch])
         .stdout(Stdio::inherit())
         .output().unwrap();
 }
