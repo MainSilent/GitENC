@@ -1,7 +1,10 @@
 use std::env;
+use dotenv::dotenv;
 mod commands;
 
 fn main() {
+    dotenv().unwrap();
+
     let args: Vec<String> = env::args().collect();
     if args.len() == 1 {
         eprintln!("Please pass an argument");
