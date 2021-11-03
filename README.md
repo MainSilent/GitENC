@@ -1,6 +1,6 @@
 # GitENC
 
-Encrypt and Decrypt all your repository data, And push or clone with one command.
+Encrypt and Decrypt all your repository data.
 
 I sometimes have very sensitive codes that even making the repository private isn't enough, I want to make sure if someone gain access to the repo they can't read the code as a clear text.
 
