@@ -43,9 +43,9 @@ fn compress() -> Result<(), std::io::Error> {
 
 fn encrypt() -> Result<(), std::io::Error> {
     let password = "dummy";
-    
+
     Command::new("openssl")
-        .args(["aes-256-cbc", "-a", "-salt", "-in", password, "-out", "sdf.enc"])
+        .args(["enc", "-aes-256-cbc", "-a", "-salt", "-in", "./enc.tar.gz", "-out", "data.enc", "-k", password, "-pbkdf2"])
         .output().unwrap();
     Ok(())
 }
