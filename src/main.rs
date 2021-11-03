@@ -14,6 +14,7 @@ fn main() {
     let command = &args[1][..];
     match command {
         "commit" => commands::commit(),
+        "clone" => commands::clone(&args[2]),
         _ => {
             eprintln!("Please pass a valid argument")
         }
