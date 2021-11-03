@@ -47,7 +47,7 @@ fn init(url: &str) {
 }
 
 fn decrypt() {
-    let password = env::var("GITENC_PASSWORD").unwrap();
+    let password = env::var("GITENC_PASSWORD").expect("Failed to read `GITENC_PASSWORD` variable");
 
     let cmd = Command::new("openssl")
         .args(["enc", "-d", "-aes-256-cbc", "-pbkdf2", "-a", "-in", "./data.enc", "-out", "./enc.tar.gz", "-k", &password])

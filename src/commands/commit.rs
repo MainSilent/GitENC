@@ -48,7 +48,7 @@ fn compress() {
 }
 
 fn encrypt() {
-    let password = env::var("GITENC_PASSWORD").unwrap();
+    let password = env::var("GITENC_PASSWORD").expect("Failed to read `GITENC_PASSWORD` variable");
 
     Command::new("openssl")
         .args(["enc", "-aes-256-cbc", "-a", "-salt", "-in", "./enc.tar.gz", "-out", "./data.enc", "-k", &password, "-pbkdf2"])

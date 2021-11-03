@@ -3,7 +3,7 @@ use dotenv::dotenv;
 mod commands;
 
 fn main() {
-    dotenv().unwrap();
+    dotenv().expect("Failed to read .env file");
 
     let args: Vec<String> = env::args().collect();
     if args.len() == 1 {
