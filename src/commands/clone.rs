@@ -40,6 +40,10 @@ fn init(url: &str) {
         .stdout(Stdio::inherit())
         .stderr(Stdio::inherit())
         .output().unwrap();
+
+    Command::new("git")
+        .args(["checkout", &branch])
+        .output().unwrap();
 }
 
 fn decrypt() {
