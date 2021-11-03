@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs, env};
 use tar::Builder;
 use std::fs::File;
 use flate2::Compression;
@@ -49,10 +49,10 @@ fn compress() -> Result<(), std::io::Error> {
 }
 
 fn encrypt() -> Result<(), std::io::Error> {
-    let password = "dummy";
+    let password = env::var("GITENC_PASSWORD").unwrap();
 
     Command::new("openssl")
-        .args(["enc", "-aes-256-cbc", "-a", "-salt", "-in", "./enc.tar.gz", "-out", "./data.enc", "-k", password, "-pbkdf2"])
+        .args(["enc", "-aes-256-cbc", "-a", "-salt", "-in", "./enc.tar.gz", "-out", "./data.enc", "-k", &password, "-pbkdf2"])
         .output().unwrap();
     Ok(())
 }

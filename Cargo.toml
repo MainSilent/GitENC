@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 tar = "0.4.37"
 flate2 = "1.0.22"
+dotenv = "0.15.0"
