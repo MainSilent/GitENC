@@ -7,10 +7,10 @@ use std::process::Command;
 
 pub fn commit() {
     println!("Compressing...");
-    compress().unwrap();
+    compress();
 
     println!("\nEncrypting...");
-    encrypt().unwrap();
+    encrypt();
 
     // Track files
     Command::new("git")
@@ -22,7 +22,7 @@ pub fn commit() {
     println!("\nCommitted successfully.");
 }
 
-fn compress() -> Result<(), std::io::Error> {
+fn compress() {
     let output = "enc.tar.gz";
     let ignore = [".env", ".git", ".gitignore", "node_modules", "__pycache__", output];
     
@@ -30,7 +30,7 @@ fn compress() -> Result<(), std::io::Error> {
     fs::remove_file(output).unwrap_or(());
 
     // Create archive
-    let tar_gz = File::create(output)?;
+    let tar_gz = File::create(output).unwrap();
     let enc = GzEncoder::new(tar_gz, Compression::default());
     let mut tar = Builder::new(enc);
     
@@ -44,15 +44,16 @@ fn compress() -> Result<(), std::io::Error> {
             tar.append_path(file).unwrap();
         }
     }
-    tar.finish()?;
-    Ok(())
+    tar.finish().unwrap();
 }
 
-fn encrypt() -> Result<(), std::io::Error> {
+fn encrypt() {
     let password = env::var("GITENC_PASSWORD").unwrap();
 
     Command::new("openssl")
         .args(["enc", "-aes-256-cbc", "-a", "-salt", "-in", "./enc.tar.gz", "-out", "./data.enc", "-k", &password, "-pbkdf2"])
         .output().unwrap();
-    Ok(())
+    
+    fs::remove_file("data.enc").ok();
+    fs::remove_file("enc.tar.gz").ok();
 }
