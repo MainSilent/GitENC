@@ -1,9 +1,16 @@
 use std::io;
+use std::{fs, env};
 use std::process::{Command, Stdio};
 
 pub fn clone(url: &str) {
     println!("Initializing git...");
     init(url);
+
+    println!("\nDecrypting...");
+    decrypt();
+
+    println!("Uncompressing...");
+    //uncompress();
 }
 
 fn init(url: &str) {
@@ -24,5 +31,13 @@ fn init(url: &str) {
         .args(["pull", "origin", &branch])
         .stdout(Stdio::inherit())
         .stderr(Stdio::inherit())
+        .output().unwrap();
+}
+
+fn decrypt() {
+    let password = env::var("GITENC_PASSWORD").unwrap();
+
+    Command::new("openssl")
+        .args(["enc", "-d", "-aes-256-cbc", "-pbkdf2", "-a", "-in", "./data.enc", "-out", "./enc.tar.gz", "-k", &password])
         .output().unwrap();
 }
