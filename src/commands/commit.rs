@@ -5,22 +5,36 @@ use flate2::Compression;
 use flate2::write::GzEncoder;
 
 pub fn commit() {
-    println!("Compression...");
+    println!("Compressing...");
     compress().unwrap();
 
-    println!("Encrypting...");
+    println!("\nEncrypting...");
     encrypt().unwrap();
 
-    println!("Done.");
+    println!("\nDone.");
 }
 
 fn compress() -> Result<(), std::io::Error> {
-    let filename = "enc.tar.gz";
+    
+    let output = "enc.tar.gz";
+    let ignore = [".env", ".git", ".gitignore", "node_modules", "__pycache__", output];
 
-    // remove last compression
-    fs::remove_file(filename).unwrap_or(());
+    // List all files
+    let files = fs::read_dir("./").unwrap();
+    for file in files {
+        let path = file.unwrap().path();
+        let name = path.display().to_string();
 
-    let tar_gz = File::create(filename)?;
+        // Check if the file is ignored
+        if !ignore.iter().any(|f| name.ends_with(f)) {
+            println!("Adding {}", name);
+        }
+    }
+
+    // Remove last compression
+    fs::remove_file(output).unwrap_or(());
+
+    let tar_gz = File::create(output)?;
     let enc = GzEncoder::new(tar_gz, Compression::default());
     let mut tar = Builder::new(enc);
     tar.append_dir_all("enc", ".").unwrap();
