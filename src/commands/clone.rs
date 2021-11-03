@@ -22,5 +22,6 @@ fn init(url: &str) {
     Command::new("git")
         .args(["pull", "origin", &branch])
         .stdout(Stdio::inherit())
+        .stderr(Stdio::inherit())
         .output().unwrap();
 }
