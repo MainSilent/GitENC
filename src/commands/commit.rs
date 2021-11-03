@@ -15,29 +15,28 @@ pub fn commit() {
 }
 
 fn compress() -> Result<(), std::io::Error> {
-    
     let output = "enc.tar.gz";
     let ignore = [".env", ".git", ".gitignore", "node_modules", "__pycache__", output];
-
-    // List all files
-    let files = fs::read_dir("./").unwrap();
-    for file in files {
-        let path = file.unwrap().path();
-        let name = path.display().to_string();
-
-        // Check if the file is ignored
-        if !ignore.iter().any(|f| name.ends_with(f)) {
-            println!("Adding {}", name);
-        }
-    }
-
+    
     // Remove last compression
     fs::remove_file(output).unwrap_or(());
 
+    // Create archive
     let tar_gz = File::create(output)?;
     let enc = GzEncoder::new(tar_gz, Compression::default());
     let mut tar = Builder::new(enc);
-    tar.append_dir_all("enc", ".").unwrap();
+    
+    // List all files
+    let files = fs::read_dir("./").unwrap().map(|f| f.unwrap().path().display().to_string());
+    for file in files {
+
+        // Check if the file is ignored
+        if !ignore.iter().any(|n| file.ends_with(n)) {
+            println!("Adding {}", file);
+            tar.append_path(file).unwrap();
+        }
+    }
+    tar.finish()?;
     Ok(())
 }
 
