@@ -54,6 +54,5 @@ fn encrypt() {
         .args(["enc", "-aes-256-cbc", "-a", "-salt", "-in", "./enc.tar.gz", "-out", "./data.enc", "-k", &password, "-pbkdf2"])
         .output().unwrap();
     
-    fs::remove_file("data.enc").ok();
     fs::remove_file("enc.tar.gz").ok();
 }
