@@ -3,10 +3,13 @@ use std::{fs, env};
 use std::process::{Command, Stdio};
 use tar::Archive;
 use std::fs::File;
-use std::path::PathBuf;
 use flate2::read::GzDecoder;
 
 pub fn clone(url: &str) {
+    fs::remove_dir_all("*").ok();
+    fs::remove_dir_all(".git").ok();
+    fs::remove_file(".gitignore").ok();
+
     println!("Initializing git...");
     init(url);
 
@@ -50,6 +53,8 @@ fn decrypt() {
         eprintln!("Failed to decrypt");
         std::process::exit(102);
     }
+
+    fs::remove_file("data.enc").ok();
 }
 
 fn extract() {
@@ -58,4 +63,6 @@ fn extract() {
     let tar = GzDecoder::new(tar_gz);
     let mut archive = Archive::new(tar);
     archive.unpack(".").unwrap();
+
+    fs::remove_file(path).ok();
 }
