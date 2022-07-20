@@ -44,6 +44,10 @@ fn init(url: &str) {
     Command::new("git")
         .args(["checkout", &branch])
         .output().unwrap();
+
+    Command::new("git")
+        .args(["push", "--set-upstream", "origin", &branch])
+        .output().unwrap();
 }
 
 fn decrypt() {
